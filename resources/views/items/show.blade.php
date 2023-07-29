@@ -6,9 +6,6 @@
             <div class="container-fluid pull-left">
                 <h3> Show Product</h3>
             </div>
-            <div class="container-fluid mt-2 pull-right">
-                <a class="btn btn-primary" href="{{ route('items.index') }}">Back</a>
-            </div>
         </div>
     </div>
    
@@ -17,6 +14,13 @@
             <div class="form-group">
                 <strong>Name:</strong>
                 {{ $item->item_name }}
+            </div>
+            <div class="form-group mt-3">
+                <strong>Image:</strong>
+                <img src="{{ url('assets/Image/'.$item->item_image) }}" style="height: 100px; width: 150px;">
+            </div>
+            <div class="form-group mt-5">
+                <a class="btn btn-primary" href="{{ route('items.index') }}">>> Back</a>
             </div>
         </div>
     </div>

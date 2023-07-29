@@ -37,8 +37,22 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['item_name'=>'required']);
-        Item::create($request->all());
+        $request->validate([
+            'item_name' => 'required',
+            'item_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
+        ]);
+        $data= new Item();
+
+        if($request->file('item_image')){
+            $file= $request->file('item_image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $file-> move(public_path('assets/Image'), $filename);
+
+            $data['item_image']= $filename;
+            $data['item_name']=$request->get('item_name');
+        }
+        $data->save();
         return redirect()->route('items.index')->with('success','Added Successfully!!');
     }
 
@@ -73,13 +87,21 @@ class TodoController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        $request->validate([
-            'item_name' => 'required',
-        ]);
-        $item->update($request->all());
+        // $request->validate(['item_name' => 'required','item_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048']);
+        $update = ['item_name' => $request->item_name ];
+
+        if ($files = $request->file('item_image')) {
+            $destinationPath = public_path('assets/Image/');// upload path
+            $profileImage = date('YmdHis') . "." . $files->getClientOriginalExtension();
+            $files->move($destinationPath, $profileImage);
+            $update['item_image'] = "$profileImage";
+        }
+        $update['item_name'] = $request->get('item_name');
+        
+        Item::where('id',$item->id)->update($update);
+
         return redirect()->route('items.index')->with('success','Updated Successfully!!');
     }
-
     /**
      * Remove the specified resource from storage.
      *

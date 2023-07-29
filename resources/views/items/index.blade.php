@@ -12,6 +12,7 @@
                 <tr>
                     <th>S.no</th>
                     <th>Items_name</th>
+                    <th>Image</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -22,6 +23,7 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $row->item_name }}</td>
+                    <td><img src="{{ url('assets/Image/'.$row->item_image) }}" style="height: 70px; width: 70px;"></td>
                     <td>
                         <form action="{{ route('items.destroy',$row->id) }}" method="POST">
    
